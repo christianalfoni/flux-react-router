@@ -9,6 +9,8 @@ Download from **dist**: [ReactRouter.min.js](https://rawgithub.com/christianalfo
 ### Scope
 - Is a function that takes a hash of routes pointing to callbacks
 - Alternatively a route can point to another route for redirect
+- Go to a route directly with: Routes.goTo(path)
+- Return route goTo function with: Routes.deferTo(path), see example
 
 ### Example
 ```javascript
@@ -34,12 +36,16 @@ Router({
 	'*': '/'
 });
 
+Router.init();
+// or
+SomePromise().then(Router.init);
+
 /* In other parts of your code */
 
 // Go directly to new route
 Router.goTo('/');
 
-// Returns a function, so that on click it will trigger the route
+// deferTo() returns a function, so that on click it will trigger the route
 <button onClick={Router.deferTo('/')}
 
 ```
