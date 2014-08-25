@@ -18,6 +18,7 @@ describe('utils', function() {
       expect(utils.match('/', '/')).to.equal(true);
       expect(utils.match('/posts', '/posts')).to.equal(true);
       expect(utils.match('/', '/foo')).to.equal(false);
+      expect(utils.match('/posts', '/users')).to.equal(false);
     });
     it('should match * to any route', function () {
       var utils = require('../app/utils.js');

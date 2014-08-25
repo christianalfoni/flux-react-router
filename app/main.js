@@ -33,17 +33,23 @@ var Router = function (routesPassed) {
 
 };
 
-Router.goTo = function (path) {
+Router.go = function (path) {
 	var onReady = function () {
 		if (document.readyState === 'interactive' || document.readyState === 'complete') {
 			window.history.pushState({}, '', path);
-			resolveRoute(path);		
+			resolveRoute(path);	
 		}
 	};
 	if (document.readyState !== 'interactive' && document.readyState !== 'complete') {
 		return document.onreadystatechange = onReady;
 	}
 	onReady();
+};
+
+Router.deferTo = function (path) {
+	return function () {
+		Router.go(path);	
+	};
 };
 
 module.exports = Router;
