@@ -31,24 +31,22 @@ var Router = function (routesPassed) {
 		resolveRoute(location.pathname);
 	};
 
+	document.onreadystatechange = function () {
+		if (document.readyState === 'interactive' || document.readyState === 'complete') {
+			resolveRoute(location.pathname);	
+		}
+	}
+
 };
 
-Router.go = function (path) {
-	var onReady = function () {
-		if (document.readyState === 'interactive' || document.readyState === 'complete') {
-			window.history.pushState({}, '', path);
-			resolveRoute(path);	
-		}
-	};
-	if (document.readyState !== 'interactive' && document.readyState !== 'complete') {
-		return document.onreadystatechange = onReady;
-	}
-	onReady();
+Router.goTo = function (path) {
+	window.history.pushState({}, '', path);
+	resolveRoute(path);	
 };
 
 Router.deferTo = function (path) {
 	return function () {
-		Router.go(path);	
+		Router.goTo(path);	
 	};
 };
 

@@ -33,6 +33,15 @@ Router({
 	},
 	'*': '/'
 });
+
+/* In other parts of your code */
+
+// Go directly to new route
+Router.goTo('/');
+
+// Returns a function, so that on click it will trigger the route
+<button onClick={Router.deferTo('/')}
+
 ```
 
 ## Contribute
