@@ -34,8 +34,16 @@ var Router = function (routesPassed) {
 };
 
 Router.goTo = function (path) {
-	window.history.pushState({}, '', path);
-	resolveRoute(url);
+	var onReady = function () {
+		if (document.readyState === 'interactive' || document.readyState === 'complete') {
+			window.history.pushState({}, '', path);
+			resolveRoute(path);		
+		}
+	};
+	if (document.readyState !== 'interactive' && document.readyState !== 'complete') {
+		return document.onreadystatechange = onReady;
+	}
+	onReady();
 };
 
 module.exports = Router;
