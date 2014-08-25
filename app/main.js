@@ -39,12 +39,17 @@ Router.init = function () {
 
 Router.goTo = function (path) {
 	var onReady = function () {
-		if (document.readyState === 'interactive') {
-			window.history.pushState({}, '', path);
+		if (document.readyState === 'complete') {
+			if (path === location.pathname) {
+				window.history.replaceState({}, '', path);
+			} else {
+				window.history.pushState({}, '', path);
+			}
 			resolveRoute(path);	
 		}
 	};
-	if (document.readyState !== 'interactive') {
+
+	if (document.readyState !== 'complete') {
 		document.onreadystatechange = onReady;
 	} else {
 		onReady();
@@ -53,7 +58,7 @@ Router.goTo = function (path) {
 
 Router.deferTo = function (path) {
 	return function () {
-		Router.go(path);	
+		Router.goTo(path);	
 	};
 };
 
