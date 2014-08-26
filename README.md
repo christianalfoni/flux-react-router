@@ -15,12 +15,12 @@ Download from **dist**: [ReactRouter.min.js](https://rawgithub.com/christianalfo
 ### Example
 ```javascript
 var React = require('react');
-var Router = require('flux-react-router');
+var ReactRouter = require('flux-react-router');
 var App = require('./App.js');
 var Posts = require('./Posts.js');
 var Post = require('./Post.js');
 
-Router({
+var router = ReactRouter({
 	'/': function () {
 		React.unmountComponentAtNode(document.body);
 		React.renderComponent(<App/>, document.body);
@@ -36,17 +36,17 @@ Router({
 	'*': '/'
 });
 
-Router.init();
+router.init();
 // or
-SomePromise().then(Router.init);
+SomePromise().then(router.init);
 
 /* In other parts of your code */
 
 // Go directly to new route
-Router.goTo('/');
+router.goTo('/');
 
 // deferTo() returns a function, so that on click it will trigger the route
-<button onClick={Router.deferTo('/')}
+<button onClick={router.deferTo('/')}
 
 ```
 

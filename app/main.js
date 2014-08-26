@@ -31,35 +31,37 @@ var Router = function (routesPassed) {
 		resolveRoute(location.pathname);
 	};
 
-};
+	return {
+		init: function () {
+			this.goTo(location.pathname);
+		},
 
-Router.init = function () {
-	Router.goTo(location.pathname);
-};
+		goTo: function (path) {
+			var onReady = function () {
+				if (document.readyState === 'complete') {
+					if (path === location.pathname) {
+						window.history.replaceState({}, '', path);
+					} else {
+						window.history.pushState({}, '', path);
+					}
+					resolveRoute(path);	
+				}
+			};
 
-Router.goTo = function (path) {
-	var onReady = function () {
-		if (document.readyState === 'complete') {
-			if (path === location.pathname) {
-				window.history.replaceState({}, '', path);
+			if (document.readyState !== 'complete') {
+				document.onreadystatechange = onReady;
 			} else {
-				window.history.pushState({}, '', path);
+				onReady();
 			}
-			resolveRoute(path);	
+		},
+
+		deferTo: function (path) {
+			return function () {
+				this.goTo(path);	
+			}.bind(this);
 		}
 	};
 
-	if (document.readyState !== 'complete') {
-		document.onreadystatechange = onReady;
-	} else {
-		onReady();
-	}
-};
-
-Router.deferTo = function (path) {
-	return function () {
-		Router.goTo(path);	
-	};
 };
 
 module.exports = Router;

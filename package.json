@@ -1,6 +1,6 @@
 {
   "name": "flux-react-router",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "React router for the flux architecture",
   "main": "./app/main.js",
   "scripts": {
