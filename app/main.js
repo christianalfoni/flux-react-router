@@ -1,66 +1,67 @@
 var utils = require('./utils.js');
 
-var routes = null;
+var routes = [];
 
 var triggerRoute = function (routeTrigger, params) {
 	if (typeof routeTrigger === 'string') {
-		if (routes[routeTrigger]) {
-			resolveRoute(routes[routeTrigger]);
-		} else {
-			throw new Error('You are redirecting to a none existing route: ' + routeTrigger);
-		}
+		resolveRoute(routeTrigger);
 	} else {
 		routeTrigger(params);
 	}
 };
 
 var resolveRoute = function (path) {
-	for (var route in routes) {
-		if (routes.hasOwnProperty(route) && utils.match(path, route)) {
-			return triggerRoute(routes[route], utils.getParams(path, route));
+	for (var x = 0; x < routes.length; x++) {
+		var route = routes[x];
+		if (utils.match(path, route.path)) {
+			return triggerRoute(route.callback, utils.getParams(path, route.path));
 		}
 	}
 	throw new Error('No routes match ' + path);
 };
 
-var Router = function (routesPassed) {
+var Router = {
 
-	routes = routesPassed;
+	init: function () {
 
-	window.onpopstate = function () {
-		resolveRoute(location.pathname);
-	};
+		window.onpopstate = function () {
+			resolveRoute(location.pathname);
+		};
+		this.goTo(location.pathname);
 
-	return {
-		init: function () {
-			this.goTo(location.pathname);
-		},
-
-		goTo: function (path) {
-			var onReady = function () {
-				if (document.readyState === 'complete') {
-					if (path === location.pathname) {
-						window.history.replaceState({}, '', path);
-					} else {
-						window.history.pushState({}, '', path);
-					}
-					resolveRoute(path);	
-				}
-			};
-
-			if (document.readyState !== 'complete') {
-				document.onreadystatechange = onReady;
-			} else {
-				onReady();
-			}
-		},
-
-		deferTo: function (path) {
-			return function () {
-				this.goTo(path);	
-			}.bind(this);
+	},
+	createRoute: function (path, callback) {
+		if (arguments.length !== 2) {
+			throw new Error('You are passing the wrong arguments to createRoute()');
 		}
-	};
+		routes.push({
+			path: path,
+			callback: callback
+		});
+	},
+	goTo: function () {
+		var onReady = function () {
+			if (document.readyState === 'complete') {
+				if (path === location.pathname) {
+					window.history.replaceState({}, '', path);
+				} else {
+					window.history.pushState({}, '', path);
+				}
+				resolveRoute(path);	
+			}
+		};
+
+		if (document.readyState !== 'complete') {
+			document.onreadystatechange = onReady;
+		} else {
+			onReady();
+		}
+	},
+	deferTo: function () {
+		return function () {
+			this.goTo(path);	
+		}.bind(this);
+	}
 
 };
 

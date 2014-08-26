@@ -20,33 +20,35 @@ var App = require('./App.js');
 var Posts = require('./Posts.js');
 var Post = require('./Post.js');
 
-var router = ReactRouter({
-	'/': function () {
-		React.unmountComponentAtNode(document.body);
-		React.renderComponent(<App/>, document.body);
-	},
-	'/posts': function () {
-		React.unmountComponentAtNode(document.body);
-		React.renderComponent(<Posts/>, document.body);
-	},
-	'/posts/{id}': function (params) {
-		React.unmountComponentAtNode(document.body);
-		React.renderComponent(<Post id={params.id}/>, document.body);	
-	},
-	'*': '/'
+ReactRouter.createRoute('/', function () {
+	React.unmountComponentAtNode(document.body);
+	React.renderComponent(<App/>, document.body);
 });
 
-router.init();
+ReactRouter.createRoute('/posts', function () {
+	React.unmountComponentAtNode(document.body);
+	React.renderComponent(<Posts/>, document.body);	
+});
+
+ReactRouter.createRoute('/posts/{id}', function () {
+	React.unmountComponentAtNode(document.body);
+	React.renderComponent(<Post id={params.id}/>, document.body);	
+});
+
+ReactRouter.createRoute('*', '/');
+
+
+ReactRouter.init();
 // or
-SomePromise().then(router.init);
+SomePromise().then(ReactRouter.init);
 
 /* In other parts of your code */
 
 // Go directly to new route
-router.goTo('/');
+Router.goTo('/');
 
 // deferTo() returns a function, so that on click it will trigger the route
-<button onClick={router.deferTo('/')}
+<button onClick={Router.deferTo('/')}
 
 ```
 
