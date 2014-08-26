@@ -27,7 +27,7 @@ var Router = {
 		window.onpopstate = function () {
 			resolveRoute(location.pathname);
 		};
-		this.goTo(location.pathname);
+		Router.goTo(location.pathname);
 
 	},
 	createRoute: function (path, callback) {
@@ -39,7 +39,7 @@ var Router = {
 			callback: callback
 		});
 	},
-	goTo: function () {
+	goTo: function (path) {
 		var onReady = function () {
 			if (document.readyState === 'complete') {
 				if (path === location.pathname) {
@@ -57,10 +57,10 @@ var Router = {
 			onReady();
 		}
 	},
-	deferTo: function () {
+	deferTo: function (path) {
 		return function () {
-			this.goTo(path);	
-		}.bind(this);
+			Router.goTo(path);	
+		};
 	}
 
 };
