@@ -21,15 +21,15 @@ var Posts = require('./Posts.js');
 var Post = require('./Post.js');
 
 ReactRouter.createRoute('/', function () {
-	React.renderComponent(<App/>, document.body);
+	React.render(<App/>, document.body);
 });
 
 ReactRouter.createRoute('/posts', function () {
-	React.renderComponent(<Posts/>, document.body);	
+	React.render(<Posts/>, document.body);	
 });
 
 ReactRouter.createRoute('/posts/{id}', function () {
-	React.renderComponent(<Post id={params.id}/>, document.body);	
+	React.render(<Post id={params.id}/>, document.body);	
 });
 
 ReactRouter.createRoute('*', '/');
