@@ -42,10 +42,10 @@ SomePromise().then(ReactRouter.init);
 /* In other parts of your code */
 
 // Go directly to new route
-Router.goTo('/');
+ReactRouter.goTo('/');
 
 // deferTo() returns a function, so that on click it will trigger the route
-<button onClick={Router.deferTo('/')}
+<button onClick={Router.deferTo('/')}>Go</button>
 
 ```
 
